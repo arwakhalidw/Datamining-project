@@ -1,18 +1,25 @@
 ---
 title: "R Notebook"
-output: html_notebook
 ---
+#our goal of collecting a dataset about liver disease is to facilitate research and analysis about it. since liver disease is more common and can be fatal we are aiming to classify the patients and analyze the data and correlations between the data.
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+#link to the source of our dataset: https://www.kaggle.com/uciml/indian-liver-patient-records
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+#general info about the dataset:
+#it has 11 columns which are:
+#age (numeric)
+#gender (binary)
+#Total_Bilirubin (numeric)
+#direct_Bilirubin (numeric)
+#Alkaline_Phosphotase (numeric)
+#Alamine_Aminotransferase (numeric)
+#Aspartate_Aminotransferase (numeric)
+#Total_Protiens (numeric)
+#Albumin (numeric)
+#Albumin_and_Globulin_Ratio (numeric)
+#Dataset (binary)
 
-```{r}
-plot(cars)
-```
+#and has 583 objects
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+#and class label (dataset) which indicates (1 disease or 2 no disease)
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
