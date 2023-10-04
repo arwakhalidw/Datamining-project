@@ -1,5 +1,7 @@
 create scatter plot 
-# Create a data frame with your x and y values
+#Alamine_Aminotransferase vs. Aspartate_Aminotransferase: X-axis: Alamine_Aminotransferase Y-axis: Aspartate_Aminotransferase
+#Purpose: Both are liver enzymes, so it might be interesting to see if there is a correlation between their levels and liver disease
+# Create a data frame with  x and y values
 data <- data.frame(
   Aspartate_Aminotransferase = c(
     18, 100, 68, 20, 59, 14, 12, 11, 19, 58, 59, 56, 58, 30, 41, 53, 441, 23, 245, 245, 
