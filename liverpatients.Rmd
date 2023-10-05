@@ -73,7 +73,7 @@ plot(dataset$Alamine_Aminotransferase,
      main = "Scatterplot of Alamine Aminotransferase vs. Aspartate Aminotransferase",
      pch = 16, col = "blue")
 
-#convert a gender value to numeric 
+# convert a gender value to numeric 
 indian_liver_patient$Gender[indian_liver_patient$Gender == "Male"] <- 0
 indian_liver_patient$Gender[indian_liver_patient$Gender == "Female"] <- 1
 
