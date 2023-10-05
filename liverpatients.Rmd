@@ -1,58 +1,63 @@
 ---
-title: "R Notebook"
+title: "My Notebook"
 ---
-# our goal of collecting a dataset about liver disease is to facilitate research and analysis about it. since liver disease is more common and can be fatal we are aiming to classify the patients and analyze the data and correlations between the data.
+## our goal of collecting a dataset about liver disease is to facilitate research and analysis about it. since liver disease is more common and can be fatal we are aiming to classify the patients and analyze the data and correlations between the data.
 
-# link to the source of our dataset: https://www.kaggle.com/uciml/indian-liver-patient-records
+link to the source of our dataset: https://www.kaggle.com/uciml/indian-liver-patient-records
 
-# general info about the dataset:
-# it has 11 columns which are:
-# age (numeric)
-# gender (symmetric binary)
-# Total_Bilirubin (numeric)
-# direct_Bilirubin (numeric)
-# Alkaline_Phosphotase (numeric)
-# Alamine_Aminotransferase (numeric)
-# Aspartate_Aminotransferase (numeric)
-# Total_Protiens (numeric)
-# Albumin (numeric)
-# Albumin_and_Globulin_Ratio (numeric)
-# Dataset (asymmetric binary)
+general info about the dataset:
+it has 11 columns which are:
+ age (numeric)
+ gender (symmetric binary)
+ Total_Bilirubin (numeric)
+ direct_Bilirubin (numeric)
+ Alkaline_Phosphotase (numeric)
+ Alamine_Aminotransferase (numeric)
+ Aspartate_Aminotransferase (numeric)
+ Total_Protiens (numeric)
+ Albumin (numeric)
+ Albumin_and_Globulin_Ratio (numeric)
+ Dataset (asymmetric binary)
 
-# and has 583 objects
+ and has 583 objects
+ and class label (dataset) which indicates (1 disease or 2 no disease)
 
-# and class label (dataset) which indicates (1 disease or 2 no disease)
 
-# The getwd() function tells you what the current working directory is
+## The getwd() function tells you what the current working directory is
+ setwd function to change the directory you work on 
+```{r}
 getwd()
-
-# setwd function to change the directory you work on 
 setwd("C:/Users/arwa_/OneDrive/المستندات/GitHub/datamining-project")
-
-# Importing the dataset
-# read file named "indian_liver_patient" and save it in dataframe named "dataset"
+```
+ 
+ 
+## Importing the dataset
+ read file named "indian_liver_patient" and save it in dataframe named "dataset"
+```{r}
 dataset = read.csv("C:/Users/arwa_/OneDrive/المستندات/GitHub/datamining-project/dataset/indian_liver_patient.csv")
+```
 
-# data analysis
 
-# raw data and summary of the dataset
+## data analysis
+
+ raw data and summary of the dataset
+```{r}
 View(dataset)
 str(dataset)
 summary(dataset)
+```
+we have 4 null values in Albumin_and_Globulin_Ratio column
+we can also see there are some outliers
 
 # Dealing with the missing values - Outliers 
-
-# Checking NULL, FALSE means no null, TRUE cells means the value of the cell is null
-is.na(dataset)
-
-# to find the total null values in the dataset
+# Replace missing Data with mean since there is only four tuples with a missing value
+```{r}
+dataset$Albumin_and_Globulin_Ratio = ifelse(is.na(dataset$Albumin_and_Globulin_Ratio), ave(dataset$Albumin_and_Globulin_Ratio, FUN =function(x) mean(x,na.rm=TRUE)), dataset$Albumin_and_Globulin_Ratio)
 sum(is.na(dataset))
-
-# find which column has missing values
-listMissingColumns <- colnames(dataset)[ apply(dataset, 2, anyNA)]
-print(listMissingColumns)
+```
 
 # stastical summaries
+```{r}
 summary(dataset$age)
 summary(dataset$Total_Bilirubin)
 summary(dataset$direct_Bilirubin)
@@ -62,26 +67,42 @@ summary(dataset$Aspartate_Aminotransferase)
 summary(dataset$Total_Protiens)
 summary(dataset$Albumin)
 summary(dataset$Albumin_and_Globulin_Ratio)
+```
 
-# data visualization
+
+## data visualization
 
 # Create a scatterplot
-plot(dataset$Alamine_Aminotransferase, 
+```{r}
+ plot(dataset$Alamine_Aminotransferase, 
      dataset$Aspartate_Aminotransferase, 
      xlab = "Alamine Aminotransferase", 
      ylab = "Aspartate Aminotransferase",
      main = "Scatterplot of Alamine Aminotransferase vs. Aspartate Aminotransferase",
      pch = 16, col = "blue")
- # There is linear relationship between Aspartate_Aminotransferase and Alamine_Aminotransferase. We can remove one of the features.  
+```
+
+ There is linear relationship (highly correlated) between Aspartate_Aminotransferase and Alamine_Aminotransferase. .  
+
+
+# create histogram to see the number of male and femal patients
+```{r}
+hist(dataset$Alamine_Aminotransferase,
+     col = "blue",           
+     xlab = "ALT Levels",    
+     ylab = "Frequency",      
+     main = "Histogram of ALT Levels") 
+```
  
-# data preprocessing
+# Create a bar plot
+```{r}
 
-# NOTE: after visualization and before replacing delete redundant features if Dr approves
+```
 
-# Replace missing Data with mean or median (median if outliers found) since there is only four tuples with a missing value
-dataset$Albumin_and_Globulin_Ratio = ifelse(is.na(dataset$Albumin_and_Globulin_Ratio), ave(dataset$Albumin_and_Globulin_Ratio, FUN =function(x) mean(x,na.rm=TRUE)), dataset$Albumin_and_Globulin_Ratio)
-sum(is.na(dataset))
+## data preprocessing
 
-
-
-
+# convert the gender value to numeric 
+```{r}
+dataset$Gender[dataset$Gender == "Male"] <- 0
+dataset$Gender[dataset$Gender == "Female"] <- 1
+```
