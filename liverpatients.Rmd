@@ -65,6 +65,8 @@ summary(dataset$Albumin_and_Globulin_Ratio)
 
 # data visualization
 
+# Create a bar plot
+ggplot(indian_liver_patient, aes(x = Age, y = Total_Bilirubin)) +geom_bar(stat = "identity", fill = "steelblue") + labs(x = "Age", y = "Total Bilirubin", title = "Age vs. Total Bilirubin Bar Plot")
 # Create a scatterplot
 plot(indian_liver_patient$Alamine_Aminotransferase, 
      indian_liver_patient$Aspartate_Aminotransferase, 
