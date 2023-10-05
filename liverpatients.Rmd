@@ -33,23 +33,24 @@ setwd("C:/Users/arwa_/OneDrive/المستندات/GitHub/datamining-project")
 # read file named "indian_liver_patient" and save it in dataframe named "dataset"
 dataset = read.csv("C:/Users/arwa_/OneDrive/المستندات/GitHub/datamining-project/dataset/indian_liver_patient.csv")
 
+# data analysis
+
 # raw data and summary of the dataset
 View(dataset)
 str(dataset)
 summary(dataset)
 
-################# Dealing with the missing values - Outliers ##################
+# Dealing with the missing values - Outliers 
+
 # Checking NULL, FALSE means no null, TRUE cells means the value of the cell is null
 is.na(dataset)
 
 # to find the total null values in the dataset
 sum(is.na(dataset))
 
-# Remove rows with missing values
-dim(dataset)
-dataset = na.omit(dataset)
-dim(dataset)
-sum(is.na(dataset))
+# find which column has missing values
+listMissingColumns <- colnames(dataset)[ apply(dataset, 2, anyNA)]
+print(listMissingColumns)
 
 # stastical summaries
 summary(dataset$age)
@@ -61,6 +62,26 @@ summary(dataset$Aspartate_Aminotransferase)
 summary(dataset$Total_Protiens)
 summary(dataset$Albumin)
 summary(dataset$Albumin_and_Globulin_Ratio)
+
+# data visualization
+
+# Create a scatterplot
+plot(dataset$Alamine_Aminotransferase, 
+     dataset$Aspartate_Aminotransferase, 
+     xlab = "Alamine Aminotransferase", 
+     ylab = "Aspartate Aminotransferase",
+     main = "Scatterplot of Alamine Aminotransferase vs. Aspartate Aminotransferase",
+     pch = 16, col = "blue")
+ # There is linear relationship between Aspartate_Aminotransferase and Alamine_Aminotransferase. We can remove one of the features.  
+ 
+# data preprocessing
+
+# NOTE: after visualization and before replacing delete redundant features if Dr approves
+
+# Replace missing Data with mean or median (median if outliers found) since there is only four tuples with a missing value
+dataset$Albumin_and_Globulin_Ratio = ifelse(is.na(dataset$Albumin_and_Globulin_Ratio), ave(dataset$Albumin_and_Globulin_Ratio, FUN =function(x) mean(x,na.rm=TRUE)), dataset$Albumin_and_Globulin_Ratio)
+sum(is.na(dataset))
+
 
 
 
