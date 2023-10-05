@@ -96,9 +96,13 @@ hist(dataset$Alamine_Aminotransferase,
  
 # Create a bar plot
 ```{r}
-
+install.packages("ggplot2")
+library(ggplot2)
+ggplot(dataset, aes(x = Age, y = Total_Bilirubin)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(x = "Age", y = "Total Bilirubin", title = "Age vs. Total Bilirubin Bar Plot")
 ```
-
+we can see from the plot that age seems to be a factor in the increase of total bilirubin
 ## data preprocessing
 
 # convert the gender value to numeric 
