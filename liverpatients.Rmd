@@ -66,8 +66,8 @@ summary(dataset$Albumin_and_Globulin_Ratio)
 # data visualization
 
 # Create a scatterplot
-plot(dataset$Alamine_Aminotransferase, 
-     dataset$Aspartate_Aminotransferase, 
+plot(indian_liver_patient$Alamine_Aminotransferase, 
+     indian_liver_patient$Aspartate_Aminotransferase, 
      xlab = "Alamine Aminotransferase", 
      ylab = "Aspartate Aminotransferase",
      main = "Scatterplot of Alamine Aminotransferase vs. Aspartate Aminotransferase",
