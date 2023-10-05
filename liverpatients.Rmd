@@ -62,7 +62,6 @@ summary(dataset$Total_Protiens)
 summary(dataset$Albumin)
 summary(dataset$Albumin_and_Globulin_Ratio)
 
-## Assuming you have imported the "indian_liver_patient" dataset
 
 # Create a scatterplot
 plot(indian_liver_patient$Alamine_Aminotransferase, 
