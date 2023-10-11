@@ -141,10 +141,10 @@ although the box plots show some extreme outliers we will not be removing them. 
      pch = 16, col = "blue")
 ```
 
- they seem to be correlated and their correlation is high.   
+Alamine_Aminotransferase,Aspartate_Aminotransferase attributes they seem to be correlated and their correlation is high.   
 
 
-# create histogram to see the number of liver patients patients
+# create histogram to see the number of patients with liver disease
 ```{r}
 hist(dataset$Dataset,
      col  = "blue", 
