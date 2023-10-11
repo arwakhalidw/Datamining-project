@@ -50,7 +50,7 @@ summary(dataset)
 we have 4 null values in Albumin_and_Globulin_Ratio column
 we can also see there are some outliers
 
-# Dealing with the missing values - Outliers 
+# Dealing with the missing values 
 # Replace missing Data with mean since there is only four tuples with a missing value
 ```{r}
 dataset$Albumin_and_Globulin_Ratio = ifelse(is.na(dataset$Albumin_and_Globulin_Ratio), ave(dataset$Albumin_and_Globulin_Ratio, FUN =function(x) mean(x,na.rm=TRUE)), dataset$Albumin_and_Globulin_Ratio)
@@ -73,6 +73,64 @@ summary(dataset$Albumin_and_Globulin_Ratio)
 
 ## data visualization
 
+# Box plot for Age
+```{r}
+boxplot(dataset$Age, main = "Age", ylab = "Age")
+```
+the box plot shows no outliers
+
+# Box plot for Total Bilirubin
+```{r}
+boxplot(dataset$Total_Bilirubin, main = "Total Bilirubin", ylab = "Total Bilirubin")
+```
+many outliers
+
+# Box plot for Direct Bilirubin
+```{r}
+boxplot(dataset$Direct_Bilirubin, main = "Direct Bilirubin", ylab = "Direct Bilirubin")
+```
+there are many outliers
+
+# Box plot for Alkaline Phosphotase
+```{r}
+boxplot(dataset$Alkaline_Phosphotase, main = "Alkaline Phosphotase", ylab = "Alkaline Phosphotase")
+```
+there are many outliers
+
+# Box plot for Alamine Aminotransferase
+```{r}
+boxplot(dataset$Alamine_Aminotransferase, main = "Alamine Aminotransferase", ylab = "Alamine Aminotransferase")
+```
+there are many outliers
+
+# Box plot for Aspartate Aminotransferase
+```{r}
+boxplot(dataset$Aspartate_Aminotransferase, main = "Aspartate Aminotransferase", ylab = "Aspartate Aminotransferase")
+```
+there are many outliers
+
+# Box plot for Total Protiens
+```{r}
+boxplot(dataset$Total_Protiens, main = "Total Protiens", ylab = "Total Protiens")
+```
+the box plot shows some outliers but they are not too far from the max and min values so we will keep them as is
+
+# Box plot for Albumin
+```{r}
+boxplot(dataset$Albumin, main = "Albumin", ylab="Albumin")
+```
+no outliers
+
+```{r}
+boxplot(dataset$Albumin_and_Globulin_Ratio, main = "Albumin and Globulin Ratio", ylab = "Albumin_and Globulin Ratio")
+```
+some outliers but they are close to the max value(not true outlier)
+
+# Dealing with the missing values - Outliers 
+although the box plots show some extreme outliers we will not be removing them. thats because, we don't know if they were entered by mistake. also according to a doctor those values are possible in liver disease patients,  and each patitents tests can vary greatly so we decided its best to keep those values as it will help the classification procedure. 
+
+
+
 # Create a scatterplot
 ```{r}
  plot(dataset$Alamine_Aminotransferase, 
@@ -83,19 +141,19 @@ summary(dataset$Albumin_and_Globulin_Ratio)
      pch = 16, col = "blue")
 ```
 
- There is linear relationship (highly correlated) between Aspartate_Aminotransferase and Alamine_Aminotransferase. .  
+ they seem to be correlated and their correlation is high.   
 
 
 # create histogram to see the number of liver patients patients
 ```{r}
 hist(dataset$Dataset,
-     col  = "blue",           
+     col  = "blue", 
      xlab = "patients",    
      ylab = "count",      
      main = "patient with liver disease or no disease")
 ```
 
-we can see from the plot that patients diagnosed with liver disease are 2x patients not diagnosed with liver disease in the dataset
+we can see from the plot that patients diagnosed with liver disease are almost 2x patients not diagnosed with liver disease in the dataset
 
 # Create a bar plot
 ```{r}
@@ -109,9 +167,30 @@ we can see from the plot that female patients are less than half the number of m
 
 # data preprocessing
 
-# convert the gender value to numeric 
+# encoding cateogrial value (gender)
+convert the gender value to numeric to make classification easier
 ```{r}
 dataset$Gender[dataset$Gender == "Male"] <- 0
 dataset$Gender[dataset$Gender == "Female"] <- 1
+```
+
+
+# normalize all attributes
+since the range for each attribute is quite different we decided it was best to normalize the attributes and unify their scale
+```{r}
+normalize <- function(x) {return ((x - min(x)) / (max(x) - min(x)))}
+dataset$Total_Bilirubin = normalize(dataset$Total_Bilirubin)
+dataset$Direct_Bilirubin = normalize(dataset$Direct_Bilirubin)
+dataset$Alkaline_Phosphotase = normalize(dataset$Alkaline_Phosphotase)
+dataset$Alamine_Aminotransferase = normalize(dataset$Alamine_Aminotransferase)
+dataset$Aspartate_Aminotransferase = normalize(dataset$Aspartate_Aminotransferase)
+dataset$Total_Protiens = normalize(dataset$Total_Protiens)
+dataset$Albumin = normalize(dataset$Albumin)
+dataset$Albumin_and_Globulin_Ratio = normalize(dataset$Albumin_and_Globulin_Ratio)
+```
+
+# print dataset after encoding and normalization
+```{r}
+print(dataset)
 ```
 
