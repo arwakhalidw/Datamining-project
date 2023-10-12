@@ -1,5 +1,5 @@
 ---
-title: "My Notebook"
+title: "R Notebook"
 output: html_document
 ---
 ## our goal of collecting a dataset about liver disease is to facilitate research and analysis about it. since liver disease is more common and can be fatal we are aiming to classify the patients and analyze the data and correlations between the data.
@@ -39,7 +39,7 @@ dataset = read.csv("C:/Users/arwa_/OneDrive/المستندات/GitHub/datamining
 ```
 
 
-## data analysis
+# Data analysis
 
  raw data and summary of the dataset
 ```{r}
@@ -57,7 +57,7 @@ dataset$Albumin_and_Globulin_Ratio = ifelse(is.na(dataset$Albumin_and_Globulin_R
 sum(is.na(dataset))
 ```
 
-# stastical summaries
+# Stastical summaries
 ```{r}
 summary(dataset$Age)
 summary(dataset$Total_Bilirubin)
@@ -71,7 +71,7 @@ summary(dataset$Albumin_and_Globulin_Ratio)
 ```
 
 
-## data visualization
+# Data visualization
 
 # Box plot for Age
 ```{r}
@@ -175,7 +175,7 @@ dataset$Gender[dataset$Gender == "Female"] <- 1
 ```
 
 
-# normalize all attributes
+# normalize all numeric attributes
 since the range for each attribute is quite different we decided it was best to normalize the attributes and unify their scale
 ```{r}
 normalize <- function(x) {return ((x - min(x)) / (max(x) - min(x)))}
