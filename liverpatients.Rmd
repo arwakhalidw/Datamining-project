@@ -141,7 +141,7 @@ although the box plots show some extreme outliers we will not be removing them. 
      pch = 16, col = "blue")
 ```
 
-Alamine_Aminotransferase,Aspartate_Aminotransferase attributes they seem to be correlated and their correlation is high.   
+Alamine_Aminotransferase,Aspartate_Aminotransferase attributes they seem to be correlated and their correlation is high and we will make sure of that with calcuations.   
 
 
 # create histogram to see the number of patients with liver disease
@@ -164,7 +164,6 @@ barplot(table(dataset$Gender),
 ```
 we can see from the plot that female patients are less than half the number of male patients
 
-
 # data preprocessing
 
 # encoding cateogrial value (gender)
@@ -173,7 +172,6 @@ convert the gender value to numeric to make classification easier
 dataset$Gender[dataset$Gender == "Male"] <- 0
 dataset$Gender[dataset$Gender == "Female"] <- 1
 ```
-
 
 # normalize all numeric attributes
 since the range for each attribute is quite different we decided it was best to normalize the attributes and unify their scale
@@ -189,8 +187,16 @@ dataset$Albumin = normalize(dataset$Albumin)
 dataset$Albumin_and_Globulin_Ratio = normalize(dataset$Albumin_and_Globulin_Ratio)
 ```
 
-# print dataset after encoding and normalization
+# check correlation
+```{r}
+cor(dataset$Aspartate_Aminotransferase,dataset$Alamine_Aminotransferase)
+cor(dataset$Total_Bilirubin,dataset$Direct_Bilirubin)
+cor(dataset$Total_Protiens,dataset$Albumin)
+cor(dataset$Albumin_and_Globulin_Ratio,dataset$Albumin)
+```
+these are all highly correlated attributes, therefore, no need for feature selection.
+
+# print dataset
 ```{r}
 print(dataset)
 ```
-
