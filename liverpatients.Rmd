@@ -2,9 +2,9 @@
 title: "R Notebook"
 output: html_document
 ---
-## our goal of collecting a dataset about liver disease is to facilitate research and analysis about it. since liver disease is more common and can be fatal we are aiming to classify the patients and analyze the data and correlations between the data.
+## our goal of classifying and clustring a dataset about liver disease is to facilitate research and analysis about it. since liver disease is more common and can be fatal we are aiming to classify and cluster the patients and analyze the data and correlations between the data.
 
-link to the source of our dataset: https://www.kaggle.com/uciml/indian-liver-patient-records
+link to the source of our dataset: {https://www.kaggle.com/uciml/indian-liver-patient-records}
 
 general info about the dataset:
 it has 11 columns which are:
@@ -23,7 +23,6 @@ it has 11 columns which are:
  and has 583 objects
  and class label (dataset) which indicates (1 disease or 2 no disease)
 
-
 ## The getwd() function tells you what the current working directory is
  setwd function to change the directory you work on 
 ```{r}
@@ -38,7 +37,6 @@ setwd("C:/Users/arwa_/OneDrive/المستندات/GitHub/datamining-project")
 dataset = read.csv("C:/Users/arwa_/OneDrive/المستندات/GitHub/datamining-project/dataset/indian_liver_patient.csv")
 ```
 
-
 # Data analysis
 
  raw data and summary of the dataset
@@ -47,134 +45,98 @@ View(dataset)
 str(dataset)
 summary(dataset)
 ```
-we have 4 null values in Albumin_and_Globulin_Ratio column
-we can also see there are some outliers
+as shown in the result, we have 4 null values in Albumin_and_Globulin_Ratio column
+we can also see there are some values are quite distant from the 3rd Qu values, in Alamine_Aminotransferase the max value is 2000 but the 3rd Qu is 60.5, Also in Alkaline_Phosphotase the max is 2110 but the 3rd Qu is 298 this scenario is repeating with many attributes which raises the question of whether or not we have outliers in the Dataset. 
+
+the range for the age attribute is quite interesting, since the min value is 4 and the max value is 90. the age 4 is quite young which is really concerning considering how dangerous the disease is.
+we will show more information about all the attributes through the boxplots.
+
+
 
 # Dealing with the missing values 
-# Replace missing Data with mean since there is only four tuples with a missing value
+as shown previously we had 4 null values in Albumin_and_Globulin_Ratio column, as they can bias the results thus, we decided its best to replace them with the mean value of the column, since deleting those tuples means we will be missing out on some valuable data.
 ```{r}
 dataset$Albumin_and_Globulin_Ratio = ifelse(is.na(dataset$Albumin_and_Globulin_Ratio), ave(dataset$Albumin_and_Globulin_Ratio, FUN =function(x) mean(x,na.rm=TRUE)), dataset$Albumin_and_Globulin_Ratio)
 sum(is.na(dataset))
 ```
+good, now the null values are replaced with the mean value and to make sure we checked if the Dataset has any null values and the result is 0 which means there is none.
 
-# Stastical summaries
-```{r}
-summary(dataset$Age)
-summary(dataset$Total_Bilirubin)
-summary(dataset$Direct_Bilirubin)
-summary(dataset$Alkaline_Phosphotase)
-summary(dataset$Alamine_Aminotransferase)
-summary(dataset$Aspartate_Aminotransferase)
-summary(dataset$Total_Protiens)
-summary(dataset$Albumin)
-summary(dataset$Albumin_and_Globulin_Ratio)
-```
-
-
-# Data visualization
 
 # Box plot for Age
 ```{r}
 boxplot(dataset$Age, main = "Age", ylab = "Age")
 ```
-the box plot shows no outliers
+the box plot shows no outliers and we can tell that the 1st Qu is at around 33 and the 3rd Qu is at 58, the range is between 4(min) and 90(max) and the median is at around 45. yet again the young ages are really concerning, but the median seems quite normal.
 
 # Box plot for Total Bilirubin
 ```{r}
 boxplot(dataset$Total_Bilirubin, main = "Total Bilirubin", ylab = "Total Bilirubin")
 ```
-many outliers
+the boxplot shows many outliers above the max value, lets investigate.
+the min value is 0.4 and the max is 75 (range between  0.4 - 75) the 3rd Qu is at 2.6, there is a big shift between the 3rd Qu and the max, but many values are between 2.6 and 38 which means these are not true outliers rather the boxplot showed them to be so, even the value 75 is quite distant, The range between the 3rd Qu and 38 (where many values are gathering) is quite big which indicates the range would be large.
 
 # Box plot for Direct Bilirubin
 ```{r}
 boxplot(dataset$Direct_Bilirubin, main = "Direct Bilirubin", ylab = "Direct Bilirubin")
 ```
-there are many outliers
+Again we could see from the boxplot there are many outliers, so the min value is 0.1 and the max is 19.7 (range between  0.1 - 19.7)the median is 0.3 and the 3rd Qu is 1.3, we can see a big gap between the 3rd Qu and the max value but there are many values that are gathering between 1.3 and 12 which indactes these are not true outliers since they are so redundant this also means the rest of the outliers are not true either since they are close to 12, again the box plot mistakenly considered them to be outliers.   
 
 # Box plot for Alkaline Phosphotase
 ```{r}
 boxplot(dataset$Alkaline_Phosphotase, main = "Alkaline Phosphotase", ylab = "Alkaline Phosphotase")
 ```
-there are many outliers
+the boxplot shows many outliers gathering between 500 and 1500, the min is 63 and the max is 2110 (range between  63 - 2110) and the median is 208 the 
+3rd Qu is 298, there is a big shift between the 3rd Qu and the max. yet again since there are many high values it means these are not true outliers.
 
 # Box plot for Alamine Aminotransferase
 ```{r}
 boxplot(dataset$Alamine_Aminotransferase, main = "Alamine Aminotransferase", ylab = "Alamine Aminotransferase")
 ```
-there are many outliers
+this boxplot is slightly diffirent since the gathering is concentrated alomst under 600 but there is a small gathering above them, for the min value we have 10, max 2000 (range between  10 - 2000) median 35 and 3rd Qu 60, again we can see a big shift but the range is big hence why the boxplot considered many values to be outliers.
 
 # Box plot for Aspartate Aminotransferase
 ```{r}
 boxplot(dataset$Aspartate_Aminotransferase, main = "Aspartate Aminotransferase", ylab = "Aspartate Aminotransferase")
 ```
-there are many outliers
+this boxplot shows the gathering stops at almost 1000 but we have few values that are reaching 5000, the max is 4929  and the min is 10 (range between  10 - 4929), the median 42 and the 3rd Qu 87. there is no doubt that the values under 2000 are not outliers, values higher than that are also near to them hence we will not be considering them to be outliers.
 
 # Box plot for Total Protiens
 ```{r}
 boxplot(dataset$Total_Protiens, main = "Total Protiens", ylab = "Total Protiens")
 ```
-the box plot shows some outliers but they are not too far from the max and min values so we will keep them as is
+the boxplot shows some outliers above the max and under the min values, the min is 2.7 and the max is 9.6 
+(range between  2.7 - 9.6), the 1st Qu is 5.8 and the 3rd Qu is 7.2, the median is 6.6, by observing the values the outliers shown on the boxplot are definitley are not true outliers since they are so close to each other.
 
 # Box plot for Albumin
 ```{r}
 boxplot(dataset$Albumin, main = "Albumin", ylab="Albumin")
 ```
-no outliers
+the boxplot shows no outliers and the min value is 0.9 the max is 5.5 (range between  0.9 - 5.5) and the median is 3.1 the 3rd Qu is 3.8 the 1st Qu is 2.6 we can see from the values that the range is quite small compared to other attributes that we went through we will have to deal with that later.
+
 
 ```{r}
 boxplot(dataset$Albumin_and_Globulin_Ratio, main = "Albumin and Globulin Ratio", ylab = "Albumin_and Globulin Ratio")
 ```
-some outliers but they are close to the max value(not true outlier)
-
-# Dealing with the missing values - Outliers 
-although the box plots show some extreme outliers we will not be removing them. thats because, we don't know if they were entered by mistake. also according to a doctor those values are possible in liver disease patients,  and each patitents tests can vary greatly so we decided its best to keep those values as it will help the classification procedure. 
+the boxplot is showing the min value to be 0.3 and the max to be 2.8 (range between  0.3 - 2.8), the median to be 0.93 and 3rd Qu of 1.1 and 1st Qu of 0.7, the outliers are shown to start after approximately 1.7 but even the highest outlier is close to the 3rd Qu which means these are not true outliers.
 
 
-
-# Create a scatterplot
-```{r}
- plot(dataset$Alamine_Aminotransferase, 
-     dataset$Aspartate_Aminotransferase, 
-     xlab = "Alamine Aminotransferase", 
-     ylab = "Aspartate Aminotransferase",
-     main = "Scatterplot of Alamine Aminotransferase vs. Aspartate Aminotransferase",
-     pch = 16, col = "blue")
-```
-
-Alamine_Aminotransferase,Aspartate_Aminotransferase attributes they seem to be correlated and their correlation is high and we will make sure of that with calcuations.   
+# Dealing with the Outliers 
+Although the box plots show some extreme outliers we will not be removing them. mainly because most of them are not true outliers. also, According to a doctor those values are possible in liver disease patients, and each patient tests can vary greatly so we decided its best to keep those values as it will help the classification procedure. 
 
 
-# create histogram to see the number of patients with liver disease
-```{r}
-hist(dataset$Dataset,
-     col  = "blue", 
-     xlab = "patients",    
-     ylab = "count",      
-     main = "patient with liver disease or no disease")
-```
-
-we can see from the plot that patients diagnosed with liver disease are almost 2x patients not diagnosed with liver disease in the dataset
-
-# Create a bar plot
-```{r}
-barplot(table(dataset$Gender),
-        ylab = "Frequency",
-        xlab = "Gender",
-        col =" blue")
-```
-we can see from the plot that female patients are less than half the number of male patients
-
-# data preprocessing
+# Data preprocessing
 
 # encoding cateogrial value (gender)
-convert the gender value to numeric to make classification easier
+convert the gender value to numeric to make classification easier, this step will result in making the male = to 0 and female = to 1.
 ```{r}
 dataset$Gender[dataset$Gender == "Male"] <- 0
 dataset$Gender[dataset$Gender == "Female"] <- 1
+dataset$Gender=as.numeric(dataset$Gender)
+head(dataset)
 ```
 
 # normalize all numeric attributes
-since the range for each attribute is quite different we decided it was best to normalize the attributes and unify their scale
+since the range for each attribute is quite different we decided it was best to normalize the attributes and unify their scale, the new range for the attributes is from 0 - 1.
 ```{r}
 normalize <- function(x) {return ((x - min(x)) / (max(x) - min(x)))}
 dataset$Total_Bilirubin = normalize(dataset$Total_Bilirubin)
@@ -185,18 +147,169 @@ dataset$Aspartate_Aminotransferase = normalize(dataset$Aspartate_Aminotransferas
 dataset$Total_Protiens = normalize(dataset$Total_Protiens)
 dataset$Albumin = normalize(dataset$Albumin)
 dataset$Albumin_and_Globulin_Ratio = normalize(dataset$Albumin_and_Globulin_Ratio)
+head(dataset)
+```
+
+# discretize the age attribute - 
+```{r}
+breaks <- c(4, 13, 21, 30, 40, 50, 60, 70, 80, 90)
+labels <- c("4-12", "13-20", "21-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80-90")
+dataset$Age <- cut(dataset$Age, breaks = breaks, labels = labels, include.lowest = TRUE, right = FALSE)
+head(dataset)
 ```
 
 # check correlation
 ```{r}
-cor(dataset$Aspartate_Aminotransferase,dataset$Alamine_Aminotransferase)
-cor(dataset$Total_Bilirubin,dataset$Direct_Bilirubin)
-cor(dataset$Total_Protiens,dataset$Albumin)
-cor(dataset$Albumin_and_Globulin_Ratio,dataset$Albumin)
+cor(dataset$Aspartate_Aminotransferase,dataset$Dataset)
+cor(dataset$Alkaline_Phosphotase,dataset$Dataset)
+cor(dataset$Alamine_Aminotransferase,dataset$Dataset)
+cor(dataset$Direct_Bilirubin,dataset$Dataset)
+cor(dataset$Total_Bilirubin,dataset$Dataset)
+cor(dataset$Total_Protiens,dataset$Dataset)
+cor(dataset$Albumin,dataset$Dataset)
+cor(dataset$Albumin_and_Globulin_Ratio,dataset$Dataset)
+cor(dataset$Gender, dataset$Dataset)
 ```
-these are all highly correlated attributes, therefore, no need for feature selection.
 
-# print dataset
+
+
+# show dataset after preprocessing
 ```{r}
-print(dataset)
+head(dataset)
 ```
+
+
+# Data visualization
+
+# Create a scatterplot for Alamine_Aminotransferase and Aspartate_Aminotransferase
+```{r}
+ plot(dataset$Alamine_Aminotransferase, 
+     dataset$Aspartate_Aminotransferase, 
+     xlab = "Alamine Aminotransferase", 
+     ylab = "Aspartate Aminotransferase",
+     main = "Scatterplot of Alamine Aminotransferase vs. Aspartate Aminotransferase",
+     pch = 16, col = "blue")
+```
+
+Alamine_Aminotransferase, Aspartate_Aminotransferase attributes seem to be correlated (linear relationship), we can see from the plot there is a major gathering between 0 to 500 on the x-axis and from 0 to 1000 at the y-axis we can also see that some points are extremely far from the rest of the data.  
+
+# Create a bar plot
+```{r}
+barplot(table(dataset$Gender),
+        ylab = "Frequency",
+        xlab = "Gender",
+        col =" blue")
+```
+we can see from the plot that female patients are less than half the number of male patients which means that the dataset is unbalanced.
+
+# carete a scatter plot for Age and class label (dataset)
+```{r}
+plot(dataset$Dataset, 
+     dataset$Age, 
+     xlab = "dataset", 
+     ylab = "Age",
+     main = "Age vs. dataset",
+     pch = 16, col = "blue")
+```
+from the plot we can see the same age groups can be found in both patients with liver disease(1) and patients without liver disease(2), which indicates the variety in ages. what is concerning though is young kids are diagnosed with liver disease, we thought its highly unlikely for kids to be diagnosed with such diseases but as it turns out this is not the case.
+
+
+# carete a scatter plot for Total_Bilirubin and class label (dataset)
+```{r}
+plot(dataset$Dataset, 
+     dataset$Total_Bilirubin, 
+     xlab = "dataset", 
+     ylab = "Total_Bilirubin",
+     main = "Total_Bilirubin vs. dataset",
+     pch = 16, col = "blue")
+```
+from the graph it seems the higher the Total_Bilirubin the more liklely the patient is diagnosed with liver disease(1).
+
+# carete a scatter plot for Direct_Bilirubin and class label (dataset)
+```{r}
+plot(dataset$Dataset, 
+     dataset$Direct_Bilirubin, 
+     xlab = "dataset", 
+     ylab = "Direct_Bilirubin",
+     main = "Direct_Bilirubin vs. dataset",
+     pch = 16, col = "blue")
+```
+Again, from the graph it seems the higher the Direct_Bilirubin the more liklely the patient is diagnosed with liver disease(1).
+
+# carete a scatter plot for Alkaline_Phosphotase and class label (dataset)
+```{r}
+plot(dataset$Dataset, 
+     dataset$Alkaline_Phosphotase, 
+     xlab = "dataset", 
+     ylab = "Alkaline_Phosphtase",
+     main = "Alkaline_Phosphtase vs. dataset",
+     pch = 16, col = "blue")
+```
+the plot shows that the patients diagnosed with liver disease(1) experience high levels of Alkaline_Phosphotase, it also show one point where the patient is not diagnosed with liver disease(2) but experience a relatively high level of Alkaline_Phosphotase.
+
+# carete a scatter plot for Alamine_Aminotransferase and class label (dataset)
+```{r}
+plot(dataset$Dataset, 
+     dataset$Alamine_Aminotransferase, 
+     xlab = "dataset", 
+     ylab = "Alamine_Aminotransferase",
+     main = "Alamine_Aminotransferase vs. dataset",
+     pch = 16, col = "blue")
+```
+in this plot we can see that patients not diagnosed with liver disease(2) have low levels of Alamine_Aminotransferase its range is between 0 ans 0.1, while patients diagnosed with liver disease have rally high levels of Alamine_Aminotransferase.
+
+# carete a scatter plot for Aspartate_Aminotransferase and class label (dataset)
+```{r}
+plot(dataset$Dataset, 
+     dataset$Aspartate_Aminotransferase, 
+     xlab = "dataset", 
+     ylab = "Aspartate_Aminotransferase",
+     main = "Aspartate_Aminotransferase vs. dataset",
+     pch = 16, col = "blue")
+```
+as we can see from the plot, most paitents diagnosed with liver disease(1) have levels lower than 0.4 and few of them have values greater than 0.4, this could indicate the more of this enzyme means there might problems with the liver. patients not diagnosed with liver disease(2) have levels less than 0.1 .
+
+# carete a scatter plot for Total_Protiens and class label (dataset)
+```{r}
+plot(dataset$Dataset, 
+     dataset$Total_Protiens, 
+     xlab = "dataset", 
+     ylab = "Total_Protiens",
+     main = "Total_Protiens vs. dataset",
+     pch = 16, col = "blue")
+```
+this is quite intersting, form the plot both patients with and without liver disease have almost the same levels of Total_Protiens, but we can see that patients with liver disease (1) have values less than 0.2 and values higher than 0.8 which is not present in patients without liver disease(2).
+
+# carete a scatter plot for Albumin and class label (dataset)
+```{r}
+plot(dataset$Dataset, 
+     dataset$Albumin, 
+     xlab = "dataset", 
+     ylab = "Albumin",
+     main = "Albumin vs. dataset",
+     pch = 16, col = "blue")
+```
+again we see both patients with and without liver disease have almost the same levels of Albumin, but yet again we see some values with the patients diagnosed with liver disease(1) that are less than 0.1 and more than 0.9 which is not present with patients not diagnosed with liver disease(2).
+
+# carete a scatter plot for Albumin_and_Globulin_Ratio and class label (dataset)
+```{r}
+plot(dataset$Dataset, 
+     dataset$Albumin, 
+     xlab = "dataset", 
+     ylab = "Albumin_and_Globulin_Ratio",
+     main = "Albumin_and_Globulin_Ratio vs. dataset",
+     pch = 16, col = "blue")
+```
+again we see both patients with and without liver disease have almost the same levels of Albumin, but yet again we see some values with the patients diagnosed with liver disease(1) that are less than 0.1 and more than 0.9 which is not present with patients not diagnosed with liver disease(2).
+
+
+# create histogram to see the number of patients with liver disease
+```{r}
+hist(dataset$Dataset,
+     col  = "blue", 
+     xlab = "Patients",    
+     ylab = "Frequency",      
+     main = "patient with liver disease or no disease")
+```
+
+we can see from the plot that patients diagnosed with liver disease are almost 2x patients not diagnosed with liver disease in the dataset which, again indecates that the dataset is unbalanced we will have to pay attention to that when it comes to the classification procedure.
