@@ -1,5 +1,4 @@
 # datamining-project
-liver disease patients
 working on this project:
 Arwa Alwassel
 Shroug Alshahri
