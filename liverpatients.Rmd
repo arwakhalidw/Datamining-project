@@ -23,18 +23,12 @@ it has 11 columns which are:
  and has 583 objects
  and class label (dataset) which indicates (1 disease or 2 no disease)
 
-## The getwd() function tells you what the current working directory is
- setwd function to change the directory you work on 
-```{r}
-getwd()
-setwd("C:/Users/arwa_/OneDrive/المستندات/GitHub/datamining-project")
-```
- 
+
  
 ## Importing the dataset
  read file named "indian_liver_patient" and save it in dataframe named "dataset"
 ```{r}
-dataset = read.csv("C:/Users/arwa_/OneDrive/المستندات/GitHub/datamining-project/dataset/indian_liver_patient.csv")
+dataset = read.csv("dataset/indian_liver_patient.csv")
 ```
 
 # Data analysis
