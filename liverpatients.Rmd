@@ -179,15 +179,11 @@ head(dataset)
 
 
 # Data visualization
-```{r}
-prdataset = read.csv("dataset/proccesseddataset.csv")
-```
-
 
 # Create a scatterplot for Alamine_Aminotransferase and Aspartate_Aminotransferase
 ```{r}
- plot(prdataset$Alamine_Aminotransferase, 
-     prdataset$Aspartate_Aminotransferase, 
+ plot(dataset$Alamine_Aminotransferase, 
+     dataset$Aspartate_Aminotransferase, 
      xlab = "Alamine Aminotransferase", 
      ylab = "Aspartate Aminotransferase",
      main = "Scatterplot of Alamine Aminotransferase vs. Aspartate Aminotransferase",
@@ -198,7 +194,7 @@ Alamine_Aminotransferase, Aspartate_Aminotransferase attributes seem to be corre
 
 # Create a bar plot
 ```{r}
-barplot(table(prdataset$Gender),
+barplot(table(dataset$Gender),
         ylab = "Frequency",
         xlab = "Gender",
         col =" blue")
@@ -207,15 +203,12 @@ we can see from the plot that female patients are less than half the number of m
 
 # carete a scatter plot for Age and class label (dataset)
 ```{r}
-class_label <- factor(prdataset$Dataset)
-
-library(ggplot2)
-
-  ggplot(prdataset, aes(x = Age, fill = class_label)) +
-  geom_density(alpha = 0.6) +
-  labs(x = "Age", y = "Density", fill = "Liver Disease") +
-  ggtitle("Distribution of Age by Liver Disease") +
-  theme_minimal()
+plot(dataset$Dataset, 
+     dataset$Age, 
+     xlab = "dataset", 
+     ylab = "Age",
+     main = "Age vs. dataset",
+     pch = 16, col = "blue")
  
 ```
 from the plot we can see the same age groups can be found in both patients with liver disease(1) and patients without liver disease(2), which indicates the variety in ages. what is concerning though is many young kids are diagnosed with liver disease, we thought its highly unlikely for kids to be diagnosed with such diseases but as it turns out this is not the case, in fact less older patients are diagnosed with liver disease.
@@ -223,8 +216,8 @@ from the plot we can see the same age groups can be found in both patients with 
 
 # carete a scatter plot for Total_Bilirubin and class label (dataset)
 ```{r}
-plot(prdataset$Dataset, 
-     prdataset$Total_Bilirubin, 
+plot(dataset$Dataset, 
+     dataset$Total_Bilirubin, 
      xlab = "dataset", 
      ylab = "Total_Bilirubin",
      main = "Total_Bilirubin vs. dataset",
@@ -234,8 +227,8 @@ from the graph it seems the higher the Total_Bilirubin the more liklely the pati
 
 # carete a scatter plot for Direct_Bilirubin and class label (dataset)
 ```{r}
-plot(prdataset$Dataset, 
-     prdataset$Direct_Bilirubin, 
+plot(dataset$Dataset, 
+     dataset$Direct_Bilirubin, 
      xlab = "dataset", 
      ylab = "Direct_Bilirubin",
      main = "Direct_Bilirubin vs. dataset",
@@ -245,8 +238,8 @@ Again, from the graph it seems the higher the Direct_Bilirubin the more liklely 
 
 # carete a scatter plot for Alkaline_Phosphotase and class label (dataset)
 ```{r}
-plot(prdataset$Dataset, 
-     prdataset$Alkaline_Phosphotase, 
+plot(dataset$Dataset, 
+     dataset$Alkaline_Phosphotase, 
      xlab = "dataset", 
      ylab = "Alkaline_Phosphtase",
      main = "Alkaline_Phosphtase vs. dataset",
@@ -256,8 +249,8 @@ the plot shows that the patients diagnosed with liver disease(1) experience high
 
 # carete a scatter plot for Alamine_Aminotransferase and class label (dataset)
 ```{r}
-plot(prdataset$Dataset, 
-     prdataset$Alamine_Aminotransferase, 
+plot(dataset$Dataset, 
+     dataset$Alamine_Aminotransferase, 
      xlab = "dataset", 
      ylab = "Alamine_Aminotransferase",
      main = "Alamine_Aminotransferase vs. dataset",
@@ -267,8 +260,8 @@ in this plot we can see that patients not diagnosed with liver disease(2) have l
 
 # carete a scatter plot for Aspartate_Aminotransferase and class label (dataset)
 ```{r}
-plot(prdataset$Dataset, 
-     prdataset$Aspartate_Aminotransferase, 
+plot(dataset$Dataset, 
+     dataset$Aspartate_Aminotransferase, 
      xlab = "dataset", 
      ylab = "Aspartate_Aminotransferase",
      main = "Aspartate_Aminotransferase vs. dataset",
@@ -278,8 +271,8 @@ as we can see from the plot, most paitents diagnosed with liver disease(1) have 
 
 # carete a scatter plot for Total_Protiens and class label (dataset)
 ```{r}
-plot(prdataset$Dataset, 
-     prdataset$Total_Protiens, 
+plot(dataset$Dataset, 
+     dataset$Total_Protiens, 
      xlab = "dataset", 
      ylab = "Total_Protiens",
      main = "Total_Protiens vs. dataset",
@@ -289,8 +282,8 @@ this is quite intersting, form the plot both patients with and without liver dis
 
 # carete a scatter plot for Albumin and class label (dataset)
 ```{r}
-plot(prdataset$Dataset, 
-     prdataset$Albumin, 
+plot(dataset$Dataset, 
+     dataset$Albumin, 
      xlab = "dataset", 
      ylab = "Albumin",
      main = "Albumin vs. dataset",
@@ -300,8 +293,8 @@ again we see both patients with and without liver disease have almost the same l
 
 # carete a scatter plot for Albumin_and_Globulin_Ratio and class label (dataset)
 ```{r}
-plot(prdataset$Dataset, 
-     prdataset$Albumin, 
+plot(dataset$Dataset, 
+     dataset$Albumin, 
      xlab = "dataset", 
      ylab = "Albumin_and_Globulin_Ratio",
      main = "Albumin_and_Globulin_Ratio vs. dataset",
@@ -312,7 +305,7 @@ again we see both patients with and without liver disease have almost the same l
 
 # create histogram to see the number of patients with liver disease
 ```{r}
-hist(prdataset$Dataset,
+hist(dataset$Dataset,
      col  = "blue", 
      xlab = "Patients",    
      ylab = "Frequency",      
@@ -320,3 +313,9 @@ hist(prdataset$Dataset,
 ```
 
 we can see from the plot that patients diagnosed with liver disease are almost 2x patients not diagnosed with liver disease in the dataset which, again indecates that the dataset is unbalanced we will have to pay attention to that when it comes to the classification procedure.
+
+```{r}
+prdataset = read.csv("dataset/proccesseddataset.csv")
+```
+
+
