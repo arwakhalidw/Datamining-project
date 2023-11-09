@@ -52,6 +52,7 @@ as shown previously we had 4 null values in Albumin_and_Globulin_Ratio column, a
 ```{r}
 dataset$Albumin_and_Globulin_Ratio = ifelse(is.na(dataset$Albumin_and_Globulin_Ratio), ave(dataset$Albumin_and_Globulin_Ratio, FUN =function(x) mean(x,na.rm=TRUE)), dataset$Albumin_and_Globulin_Ratio)
 sum(is.na(dataset))
+summary(dataset$Albumin_and_Globulin_Ratio)
 ```
 good, now the null values are replaced with the mean value and to make sure we checked if the Dataset has any null values and the result is 0 which means there is none.
 
@@ -144,16 +145,10 @@ dataset$Albumin_and_Globulin_Ratio = normalize(dataset$Albumin_and_Globulin_Rati
 head(dataset)
 ```
 
-# discretize the age attribute - 
-```{r}
-breaks <- c(4, 13, 21, 30, 40, 50, 60, 70, 80, 90)
-labels <- c("4-12", "13-20", "21-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80-90")
-dataset$Age <- cut(dataset$Age, breaks = breaks, labels = labels, include.lowest = TRUE, right = FALSE)
-head(dataset)
-```
 
 # check correlation
 ```{r}
+cor(dataset$Age,dataset$Dataset)
 cor(dataset$Aspartate_Aminotransferase,dataset$Dataset)
 cor(dataset$Alkaline_Phosphotase,dataset$Dataset)
 cor(dataset$Alamine_Aminotransferase,dataset$Dataset)
@@ -162,10 +157,20 @@ cor(dataset$Total_Bilirubin,dataset$Dataset)
 cor(dataset$Total_Protiens,dataset$Dataset)
 cor(dataset$Albumin,dataset$Dataset)
 cor(dataset$Albumin_and_Globulin_Ratio,dataset$Dataset)
-cor(dataset$Gender, dataset$Dataset)
+
+chisq.test(dataset$Gender, dataset$Dataset)
 ```
+we can see there are 4 attributes that are positively correlated to the class label (Dataset), which are:
+Gender, Albumin_and_Globulin_Ratio, Total_Protiens, Albumin. these attributes will be good for splitting the tree in the classification.
 
-
+# discretize the age attribute 
+we decided to perform this step to make classification simpler by assigning all the patients to an appropriate interval. the bew intervals are as follows : 4-12, 13-20, 21-29, 30-39, 40-49, 50-59, 60-69, 70-79, 80-90.
+```{r}
+breaks <- c(4, 13, 21, 30, 40, 50, 60, 70, 80, 90)
+labels <- c("4-12", "13-20", "21-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80-90")
+dataset$Age <- cut(dataset$Age, breaks = breaks, labels = labels, include.lowest = TRUE, right = FALSE)
+head(dataset)
+```
 
 # show dataset after preprocessing
 ```{r}
@@ -174,11 +179,15 @@ head(dataset)
 
 
 # Data visualization
+```{r}
+prdataset = read.csv("dataset/proccesseddataset.csv")
+```
+
 
 # Create a scatterplot for Alamine_Aminotransferase and Aspartate_Aminotransferase
 ```{r}
- plot(dataset$Alamine_Aminotransferase, 
-     dataset$Aspartate_Aminotransferase, 
+ plot(prdataset$Alamine_Aminotransferase, 
+     prdataset$Aspartate_Aminotransferase, 
      xlab = "Alamine Aminotransferase", 
      ylab = "Aspartate Aminotransferase",
      main = "Scatterplot of Alamine Aminotransferase vs. Aspartate Aminotransferase",
@@ -189,7 +198,7 @@ Alamine_Aminotransferase, Aspartate_Aminotransferase attributes seem to be corre
 
 # Create a bar plot
 ```{r}
-barplot(table(dataset$Gender),
+barplot(table(prdataset$Gender),
         ylab = "Frequency",
         xlab = "Gender",
         col =" blue")
@@ -198,20 +207,24 @@ we can see from the plot that female patients are less than half the number of m
 
 # carete a scatter plot for Age and class label (dataset)
 ```{r}
-plot(dataset$Dataset, 
-     dataset$Age, 
-     xlab = "dataset", 
-     ylab = "Age",
-     main = "Age vs. dataset",
-     pch = 16, col = "blue")
+class_label <- factor(prdataset$Dataset)
+
+library(ggplot2)
+
+  ggplot(prdataset, aes(x = Age, fill = class_label)) +
+  geom_density(alpha = 0.6) +
+  labs(x = "Age", y = "Density", fill = "Liver Disease") +
+  ggtitle("Distribution of Age by Liver Disease") +
+  theme_minimal()
+ 
 ```
-from the plot we can see the same age groups can be found in both patients with liver disease(1) and patients without liver disease(2), which indicates the variety in ages. what is concerning though is young kids are diagnosed with liver disease, we thought its highly unlikely for kids to be diagnosed with such diseases but as it turns out this is not the case.
+from the plot we can see the same age groups can be found in both patients with liver disease(1) and patients without liver disease(2), which indicates the variety in ages. what is concerning though is many young kids are diagnosed with liver disease, we thought its highly unlikely for kids to be diagnosed with such diseases but as it turns out this is not the case, in fact less older patients are diagnosed with liver disease.
 
 
 # carete a scatter plot for Total_Bilirubin and class label (dataset)
 ```{r}
-plot(dataset$Dataset, 
-     dataset$Total_Bilirubin, 
+plot(prdataset$Dataset, 
+     prdataset$Total_Bilirubin, 
      xlab = "dataset", 
      ylab = "Total_Bilirubin",
      main = "Total_Bilirubin vs. dataset",
@@ -221,8 +234,8 @@ from the graph it seems the higher the Total_Bilirubin the more liklely the pati
 
 # carete a scatter plot for Direct_Bilirubin and class label (dataset)
 ```{r}
-plot(dataset$Dataset, 
-     dataset$Direct_Bilirubin, 
+plot(prdataset$Dataset, 
+     prdataset$Direct_Bilirubin, 
      xlab = "dataset", 
      ylab = "Direct_Bilirubin",
      main = "Direct_Bilirubin vs. dataset",
@@ -232,8 +245,8 @@ Again, from the graph it seems the higher the Direct_Bilirubin the more liklely 
 
 # carete a scatter plot for Alkaline_Phosphotase and class label (dataset)
 ```{r}
-plot(dataset$Dataset, 
-     dataset$Alkaline_Phosphotase, 
+plot(prdataset$Dataset, 
+     prdataset$Alkaline_Phosphotase, 
      xlab = "dataset", 
      ylab = "Alkaline_Phosphtase",
      main = "Alkaline_Phosphtase vs. dataset",
@@ -243,8 +256,8 @@ the plot shows that the patients diagnosed with liver disease(1) experience high
 
 # carete a scatter plot for Alamine_Aminotransferase and class label (dataset)
 ```{r}
-plot(dataset$Dataset, 
-     dataset$Alamine_Aminotransferase, 
+plot(prdataset$Dataset, 
+     prdataset$Alamine_Aminotransferase, 
      xlab = "dataset", 
      ylab = "Alamine_Aminotransferase",
      main = "Alamine_Aminotransferase vs. dataset",
@@ -254,8 +267,8 @@ in this plot we can see that patients not diagnosed with liver disease(2) have l
 
 # carete a scatter plot for Aspartate_Aminotransferase and class label (dataset)
 ```{r}
-plot(dataset$Dataset, 
-     dataset$Aspartate_Aminotransferase, 
+plot(prdataset$Dataset, 
+     prdataset$Aspartate_Aminotransferase, 
      xlab = "dataset", 
      ylab = "Aspartate_Aminotransferase",
      main = "Aspartate_Aminotransferase vs. dataset",
@@ -265,8 +278,8 @@ as we can see from the plot, most paitents diagnosed with liver disease(1) have 
 
 # carete a scatter plot for Total_Protiens and class label (dataset)
 ```{r}
-plot(dataset$Dataset, 
-     dataset$Total_Protiens, 
+plot(prdataset$Dataset, 
+     prdataset$Total_Protiens, 
      xlab = "dataset", 
      ylab = "Total_Protiens",
      main = "Total_Protiens vs. dataset",
@@ -276,8 +289,8 @@ this is quite intersting, form the plot both patients with and without liver dis
 
 # carete a scatter plot for Albumin and class label (dataset)
 ```{r}
-plot(dataset$Dataset, 
-     dataset$Albumin, 
+plot(prdataset$Dataset, 
+     prdataset$Albumin, 
      xlab = "dataset", 
      ylab = "Albumin",
      main = "Albumin vs. dataset",
@@ -287,8 +300,8 @@ again we see both patients with and without liver disease have almost the same l
 
 # carete a scatter plot for Albumin_and_Globulin_Ratio and class label (dataset)
 ```{r}
-plot(dataset$Dataset, 
-     dataset$Albumin, 
+plot(prdataset$Dataset, 
+     prdataset$Albumin, 
      xlab = "dataset", 
      ylab = "Albumin_and_Globulin_Ratio",
      main = "Albumin_and_Globulin_Ratio vs. dataset",
@@ -299,7 +312,7 @@ again we see both patients with and without liver disease have almost the same l
 
 # create histogram to see the number of patients with liver disease
 ```{r}
-hist(dataset$Dataset,
+hist(prdataset$Dataset,
      col  = "blue", 
      xlab = "Patients",    
      ylab = "Frequency",      
