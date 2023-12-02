@@ -1279,7 +1279,7 @@ prdataset =subset (prdataset, select = -c(Dataset))
 
 ## Find optimal number of clusters
 
-![](images/Screenshot 2023-12-02 225450.png){width="524"}
+![](images/Screenshot%202023-12-02%20225450.png){width="524"}
 
 ```{r}
 set.seed(123)  # Set seed for reproducibility
@@ -1524,7 +1524,7 @@ This overlap implies that some data points share characteristics with
 more than one cluster and to a lesser extent between clusters (blue) and
 (red).
 
-##  Evaluation and Comparison
+## Evaluation and Comparison
 
 for Classification:
 
@@ -1697,3 +1697,9 @@ labeled data (diseased or non-diseased in this case).
 for classification tasks where the goal is to assign new data points to
 predefined classes, supervised learning algorithms like classification
 models are typically more suitable in our sitution.
+
+# References
+
+yasaxena, saum (2023) R tutorial: Learn R programming, GeeksforGeeks.
+Available at: <https://www.geeksforgeeks.org/r-tutorial/?ref=lbp>
+(Accessed: 02 December 2023).
